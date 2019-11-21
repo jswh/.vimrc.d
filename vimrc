@@ -86,8 +86,6 @@ Plug 'itchyny/lightline.vim'
         \ },
     \}
 
-    let g:lightline.separator = { 'left': '', 'right': '' }
-    let g:lightline.subseparator = { 'left': '', 'right': '' }
     let g:lightline#onedark#disable_bold_style=1
     function! SessionStatus()
         let s = ObsessionStatus()
@@ -100,7 +98,7 @@ Plug 'itchyny/lightline.vim'
 
     function! GitBranch()
         let branch = fugitive#head()
-        return branch !=# '' ? ' ' . branch : 'N/N'
+        return branch !=# '' ? '💈' . branch : 'N/N'
     endfunction
 
     function! LightlineFilename()
@@ -120,8 +118,8 @@ Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scro
     nnoremap dir :NERDTreeTabsToggle<cr>
     nnoremap dif :NERDTreeTabsFind<cr>
 
-    let g:NERDTreeDirArrowExpandable = '▸'
-    let g:NERDTreeDirArrowCollapsible = '▾'
+    let g:NERDTreeDirArrowExpandable = '+'
+    let g:NERDTreeDirArrowCollapsible = '-'
     let g:NERDTreeMouseMode = 2
     let g:NERDTreeAutoDeleteBuffer = 1
 " show git status of line in status column
@@ -174,6 +172,7 @@ call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
 "===================keybinding=======================
+nnoremap <f12> :!/mnt/c/Users/wcaow/OneDrive/绿色软件/npp.7.5.8/notepad++.exe %<cr>
 "move window
 nnoremap wh <c-w>h
 nnoremap wj <c-w>j
