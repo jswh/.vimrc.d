@@ -1,8 +1,10 @@
 #!/bin/bash
-HOST="root@127.0.0.1"
-REMOTE_ROOT="/data/www/cjjob"
+HOST="ubuntu@123.206.204.115"
+REMOTE_ROOT="/data/www/smilodon"
 if [[ "upload" == $1 ]];then
     scp `dirname $0`/$2/$3 $HOST:$REMOTE_ROOT/$2/$3
 elif [[ 'download' == $1 ]];then
     scp $HOST:$REMOTE_ROOT/$2/$3 `dirname $0`/$2/$3
+elif [[ "full-upload" == $1 ]];then
+    scp -r `dirname $0`/* $HOST:$REMOTE_ROOT/
 fi
