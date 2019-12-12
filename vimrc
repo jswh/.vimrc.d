@@ -44,16 +44,17 @@ augroup AutoSaveFolds
   autocmd BufWrite *.* mkview
   autocmd BufRead *.* silent! loadview
 augroup END
+if (has("termguicolors"))
+    set termguicolors
+endif
 "====================plugin start=========================
 call plug#begin("~/.vim/bundle")
 "====================theme plugin=========================
-Plug 'ayu-theme/ayu-vim' " or other package manager
-    set termguicolors     " enable true colors support
-    "let ayucolor="light"  " for light version of theme
-    let ayucolor="mirage" " for mirage version of theme
-    "let ayucolor="dark"   " for dark version of theme
-    colorscheme ayu
-    highlight Normal guifg=#D9D7CE guibg=#2d2d2d
+Plug 'kristijanhusak/vim-hybrid-material'
+    let g:enable_bold_font = 1
+    let g:enable_italic_font = 1
+    let g:hybrid_transparent_background = 1
+    colorscheme hybrid_material
 
 Plug 'junegunn/vim-emoji'
 " A solid language color pack for Vim. (syntax, indent, ftplugin)
@@ -116,7 +117,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
     let g:NERDTreeIgnore=['\.pyc$', '\.vim$', '\~$', '\.out']
     nnoremap dir :NERDTreeTabsToggle<cr>
-    nnoremap dif :NERDTreeTabsFind<cr>
+    nnoremap dif <c-w>l:NERDTreeTabsOpen<cr>:NERDTreeTabsFind<cr>
 
     let g:NERDTreeDirArrowExpandable = '+'
     let g:NERDTreeDirArrowCollapsible = '-'
