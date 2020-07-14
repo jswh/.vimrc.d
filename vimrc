@@ -50,11 +50,14 @@ endif
 "====================plugin start=========================
 call plug#begin("~/.vim/bundle")
 "====================theme plugin=========================
-Plug 'kristijanhusak/vim-hybrid-material'
-    let g:enable_bold_font = 1
-    let g:enable_italic_font = 1
-    let g:hybrid_transparent_background = 1
-    colorscheme hybrid_material
+"Plug 'kristijanhusak/vim-hybrid-material'
+    "let g:enable_bold_font = 1
+    "let g:enable_italic_font = 1
+    "let g:hybrid_transparent_background = 1
+    "colorscheme hybrid_material
+Plug 'dracula/vim'
+    colorscheme dracula
+    hi Normal guibg=NONE ctermbg=NONE
 
 Plug 'junegunn/vim-emoji'
 " A solid language color pack for Vim. (syntax, indent, ftplugin)
@@ -65,20 +68,21 @@ Plug 'itchyny/lightline.vim'
     set laststatus=2
     set noshowmode
     let g:lightline = {
-        \ 'colorscheme': 'wombat',
+        \ 'colorscheme': 'dracula',
         \ 'active': {
         \   'left': [
         \       ['mode', 'paste'],
+        \       ['gitbranch'],
         \       ['readonly', 'absolutepath'],
         \   ],
         \   'right': [
-        \       ['gitbranch'],
         \       ['filetype','fileencoding'],
         \       ['cocstatus'],
         \   ]
         \ },
         \ 'inactive': {'right': []},
         \ 'component_function': {
+        \   'giticon': 'GitIcon',
         \   'gitbranch': 'GitBranch',
         \   'filename': 'LightlineFilename',
         \   'session': 'SessionStatus',
@@ -99,7 +103,7 @@ Plug 'itchyny/lightline.vim'
 
     function! GitBranch()
         let branch = fugitive#head()
-        return branch !=# '' ? '💈' . branch : 'N/N'
+        return branch !=# '' ?  ' '.branch  : ' N/N'
     endfunction
 
     function! LightlineFilename()
@@ -114,15 +118,19 @@ Plug 'tpope/vim-fugitive'
 " nerdtree: user `dir` to open file tree
 " nerdtree-git-plugin show git status of file in nerdtree
 " nerdtree-tabs keep nerdtree status as the same in all tabs
+" Plug 'Shougo/defx.nvim'
+
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
     let g:NERDTreeIgnore=['\.pyc$', '\.vim$', '\~$', '\.out']
     nnoremap dir :NERDTreeTabsToggle<cr>
     nnoremap dif <c-w>l:NERDTreeTabsOpen<cr>:NERDTreeTabsFind<cr>
 
-    let g:NERDTreeDirArrowExpandable = '+'
-    let g:NERDTreeDirArrowCollapsible = '-'
+    let g:NERDTreeDirArrowExpandable = '▶'
+    let g:NERDTreeDirArrowCollapsible = '◿'
     let g:NERDTreeMouseMode = 2
     let g:NERDTreeAutoDeleteBuffer = 1
+" Plug 'vim-vdebug/vdebug'
 " show git status of line in status column
 Plug 'airblade/vim-gitgutter'
 " autoclose of <> {} '' etc
@@ -134,13 +142,15 @@ Plug 'skywind3000/asyncrun.vim'
 " use .sync file to do sync task
 Plug 'eshion/vim-sync'
     autocmd BufWritePost * :call SyncUploadFile()
-" a fuzzy finder, use ctrl-p
+" a fuzzy finder, use ctrl-p.
 source ~/.vimrc.d/denite.vimrc
 " enable project .vimrc
-if filereadable(expand("$PWD/.vimrc"))
-    source $PWD/.vimrc
+if filereadable(expand(".vimrc"))
+    source .vimrc
     autocmd VimEnter * echo expand("loaded project vimrc $PWD/.vimrc")
 endif
+Plug 'Konfekt/FastFold'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "===================plugin end=======================
 " denite buffer mapping not change for project
@@ -160,6 +170,10 @@ function! s:denite_my_settings() abort
   nnoremap <silent><buffer><expr> <Space>
   \ denite#do_map('toggle_select').'j'
 endfunction
+
+call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
+      \ [ '.git/', '.ropeproject/', '__pycache__/',
+      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
 autocmd FileType denite-filter call s:denite_filter_my_settings()
 function! s:denite_filter_my_settings() abort
   imap <silent><buffer> <esc> <Plug>(denite_filter_quit)
@@ -172,8 +186,11 @@ call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
 call denite#custom#var('grep', 'separator', ['--'])
 call denite#custom#var('grep', 'final_opts', [])
+let ignore=&wildignore . ',*.pyc,.git,.hg,.svn'
+call denite#custom#var('file/rec', 'command',
+\ ['scantree.py', '--path', ':directory',
+\  '--ignore', ignore])
 "===================keybinding=======================
-nnoremap <f12> :!/mnt/c/Users/wcaow/OneDrive/绿色软件/npp.7.5.8/notepad++.exe %<cr>
 "move window
 nnoremap wh <c-w>h
 nnoremap wj <c-w>j
@@ -183,6 +200,11 @@ nnoremap wl <c-w>l
 "edit vimrc
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+"mapping system copy/past
+inoremap <leader>v <esc>"+pa
+nnoremap <leader>v "+pa
+vnoremap <leader>c "+y
 
 autocmd BufWritePre * :%s/\s\+$//e
 

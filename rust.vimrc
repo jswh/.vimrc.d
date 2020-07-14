@@ -1,4 +1,5 @@
-source ~/.vimrc.d/ycm.vimrc
+source ~/.vimrc.d/coc.vimrc
+source ~/.vimrc.d/snippets.vimrc
 "======================rust==========================
 autocmd! filetype rust nnoremap <F5> :call RustCompilerAndRun()<cr>
 function! RustCompiler()
