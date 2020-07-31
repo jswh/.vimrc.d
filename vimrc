@@ -12,6 +12,8 @@ set nu ruler
 set list listchars=tab:┆\ ,trail:·
 set tabstop=4 shiftwidth=4 expandtab
 set completeopt-=preview
+set fdm=indent
+set fml=3
 syntax on
 " insert mode - line
 let &t_SI .= "\<Esc>[5 q"
@@ -32,8 +34,8 @@ set splitbelow splitright
 set ttimeoutlen=1
 augroup FastEscape
     autocmd!
-    au InsertEnter * set timeoutlen=250
-    au InsertLeave * set timeoutlen=200
+    au InsertEnter * set timeoutlen=150
+    au InsertLeave * set timeoutlen=100
 augroup END
 " set path to started path
 autocmd VimEnter * setlocal path=$PWD/**
@@ -58,6 +60,8 @@ call plug#begin("~/.vim/bundle")
 Plug 'dracula/vim'
     colorscheme dracula
     hi Normal guibg=NONE ctermbg=NONE
+    hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
+    hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE
 
 Plug 'junegunn/vim-emoji'
 " A solid language color pack for Vim. (syntax, indent, ftplugin)
@@ -118,7 +122,6 @@ Plug 'tpope/vim-fugitive'
 " nerdtree: user `dir` to open file tree
 " nerdtree-git-plugin show git status of file in nerdtree
 " nerdtree-tabs keep nerdtree status as the same in all tabs
-" Plug 'Shougo/defx.nvim'
 
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
@@ -130,6 +133,9 @@ Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scro
     let g:NERDTreeDirArrowCollapsible = '◿'
     let g:NERDTreeMouseMode = 2
     let g:NERDTreeAutoDeleteBuffer = 1
+    let NERDTreeMinimalUI = 1
+    let NERDTreeDirArrows = 1
+
 " Plug 'vim-vdebug/vdebug'
 " show git status of line in status column
 Plug 'airblade/vim-gitgutter'
