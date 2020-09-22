@@ -32,11 +32,11 @@ set splitbelow splitright
 
 
 set ttimeoutlen=1
-augroup FastEscape
-    autocmd!
-    au InsertEnter * set timeoutlen=150
-    au InsertLeave * set timeoutlen=100
-augroup END
+"augroup FastEscape
+"    autocmd!
+"    au InsertEnter * set timeoutlen=150
+"    au InsertLeave * set timeoutlen=100
+"augroup END
 " set path to started path
 autocmd VimEnter * setlocal path=$PWD/**
 filetype plugin indent on
@@ -52,21 +52,12 @@ endif
 "====================plugin start=========================
 call plug#begin("~/.vim/bundle")
 "====================theme plugin=========================
-"Plug 'kristijanhusak/vim-hybrid-material'
-    "let g:enable_bold_font = 1
-    "let g:enable_italic_font = 1
-    "let g:hybrid_transparent_background = 1
-    "colorscheme hybrid_material
-Plug 'dracula/vim'
-    colorscheme dracula
-    hi Normal guibg=NONE ctermbg=NONE
-    hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
-    hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE
-
 Plug 'junegunn/vim-emoji'
 " A solid language color pack for Vim. (syntax, indent, ftplugin)
 Plug 'sheerun/vim-polyglot'
     let g:polyglot_disabled = []
+
+Plug 'dracula/vim'
 
 Plug 'itchyny/lightline.vim'
     set laststatus=2
@@ -214,3 +205,8 @@ vnoremap <leader>c "+y
 
 autocmd BufWritePre * :%s/\s\+$//e
 
+"===================theme settings=======================
+colorscheme dracula
+hi Normal guibg=NONE ctermbg=NONE
+hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
+hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE
