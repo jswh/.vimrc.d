@@ -58,8 +58,8 @@ Plug 'sheerun/vim-polyglot'
     let g:polyglot_disabled = []
 
 Plug 'dracula/vim'
-
 Plug 'itchyny/lightline.vim'
+
     set laststatus=2
     set noshowmode
     let g:lightline = {
@@ -204,6 +204,7 @@ nnoremap <leader>v "+pa
 vnoremap <leader>c "+y
 
 autocmd BufWritePre * :%s/\s\+$//e
+nnoremap <leader>q :bprevious<CR>:bdelete #<CR>
 
 "===================theme settings=======================
 colorscheme dracula
