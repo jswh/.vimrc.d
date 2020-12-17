@@ -52,18 +52,22 @@ endif
 "====================plugin start=========================
 call plug#begin("~/.vim/bundle")
 "====================theme plugin=========================
+Plug 'Asheq/close-buffers.vim'
+
 Plug 'junegunn/vim-emoji'
 " A solid language color pack for Vim. (syntax, indent, ftplugin)
 Plug 'sheerun/vim-polyglot'
     let g:polyglot_disabled = []
 
-Plug 'dracula/vim'
+"Plug 'dracula/vim'
+Plug 'patstockwell/vim-monokai-tasty'
 Plug 'itchyny/lightline.vim'
+
 
     set laststatus=2
     set noshowmode
     let g:lightline = {
-        \ 'colorscheme': 'dracula',
+        \ 'colorscheme': 'monokai_tasty',
         \ 'active': {
         \   'left': [
         \       ['mode', 'paste'],
@@ -124,6 +128,7 @@ Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scro
     let g:NERDTreeDirArrowCollapsible = '◿'
     let g:NERDTreeMouseMode = 2
     let g:NERDTreeAutoDeleteBuffer = 1
+    let NERDTreeShowBookmarks =1
     let NERDTreeMinimalUI = 1
     let NERDTreeDirArrows = 1
 
@@ -144,6 +149,8 @@ source ~/.vimrc.d/denite.vimrc
 " enable project .vimrc
 if filereadable(expand(".vimrc"))
     source .vimrc
+    let g:NERDTreeBookmarksFile = $HOME . "/.vim/bundle/nerdtree/." . join(split(fnamemodify('.vimrc', ':p:h'), '/'), '.') . ".nerdtree-bookmarks"
+    execute "silent !touch " . g:NERDTreeBookmarksFile
     autocmd VimEnter * echo expand("loaded project vimrc $PWD/.vimrc")
 endif
 Plug 'Konfekt/FastFold'
@@ -207,7 +214,7 @@ autocmd BufWritePre * :%s/\s\+$//e
 nnoremap <leader>q :bprevious<CR>:bdelete #<CR>
 
 "===================theme settings=======================
-colorscheme dracula
+colorscheme vim-monokai-tasty
 hi Normal guibg=NONE ctermbg=NONE
 hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
 hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE

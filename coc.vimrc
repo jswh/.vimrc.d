@@ -1,4 +1,7 @@
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc-json',  {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-snippets',  {'do': 'yarn install --frozen-lockfile'}
+Plug 'iamcco/coc-vimlsp',  {'do': 'yarn install --frozen-lockfile'}
 " if hidden is not set, TextEdit might fail.
 set hidden
 
@@ -120,3 +123,23 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>v
+
+let g:coc_start_at_startup=0
+function! CocTimerStart(timer)
+  exec "CocStart"
+endfunction
+call timer_start(500,'CocTimerStart',{'repeat':1})
+let g:trigger_size = 0.5 * 1048576
+
+augroup hugefile
+  autocmd!
+  autocmd BufReadPre *
+        \ let size = getfsize(expand('<afile>')) |
+        \ if (size > g:trigger_size) || (size == -2) |
+        \   echohl WarningMsg | echomsg 'WARNING: altering options for this huge file!' | echohl None |
+        \   exec 'CocDisable' |
+        \ else |
+        \   exec 'CocEnable' |
+        \ endif |
+        \ unlet size
+augroup END

@@ -1,5 +1,6 @@
 source ~/.vimrc.d/coc.vimrc
 source ~/.vimrc.d/snippets.vimrc
+Plug 'fannheyward/coc-pyright', {'do': 'yarn install --frozen-lockfile'}
 autocmd! filetype python nnoremap <F5> :call PythonRun()<cr>
 " use $PWD for django module import
 autocmd VimEnter * call coc#config('python.analysis.extraPaths', [$PWD])
