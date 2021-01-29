@@ -38,7 +38,7 @@ set ttimeoutlen=1
 "    au InsertLeave * set timeoutlen=100
 "augroup END
 " set path to started path
-autocmd VimEnter * setlocal path=$PWD/**
+autocmd VimEnter * setlocal path=$PWD
 filetype plugin indent on
 
 augroup AutoSaveFolds
@@ -114,15 +114,16 @@ Plug 'itchyny/lightline.vim'
 
 " git wraper plugin, user G*** command like Gstatus,Gcommit
 Plug 'tpope/vim-fugitive'
+
 " nerdtree: user `dir` to open file tree
 " nerdtree-git-plugin show git status of file in nerdtree
 " nerdtree-tabs keep nerdtree status as the same in all tabs
-
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'jistr/vim-nerdtree-tabs' | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
     let g:NERDTreeIgnore=['\.pyc$', '\.vim$', '\~$', '\.out']
-    nnoremap dir :NERDTreeTabsToggle<cr>
-    nnoremap dif <c-w>l:NERDTreeTabsOpen<cr>:NERDTreeTabsFind<cr>
+    autocmd BufWinEnter * silent NERDTreeMirror
+    nnoremap dir :NERDTreeToggle<CR>
+    nnoremap dif :NERDTreeFind<CR>
 
     let g:NERDTreeDirArrowExpandable = '▶'
     let g:NERDTreeDirArrowCollapsible = '◿'
@@ -147,11 +148,20 @@ Plug 'eshion/vim-sync'
 " a fuzzy finder, use ctrl-p.
 source ~/.vimrc.d/denite.vimrc
 " enable project .vimrc
-if filereadable(expand(".vimrc"))
+if getcwd() != expand('~') && filereadable(".vimrc")
     source .vimrc
     let g:NERDTreeBookmarksFile = $HOME . "/.vim/bundle/nerdtree/." . join(split(fnamemodify('.vimrc', ':p:h'), '/'), '.') . ".nerdtree-bookmarks"
     execute "silent !touch " . g:NERDTreeBookmarksFile
     autocmd VimEnter * echo expand("loaded project vimrc $PWD/.vimrc")
+elseif filereadable("Cargo.toml")
+    source ~/.vimrc.d/rust.vimrc
+    autocmd VimEnter * echo expand("loaded language config: rust")
+elseif filereadable('package.json')
+    source ~/.vimrc.d/javascript.vimrc
+    autocmd VimEnter * echo expand("loaded language config: javascript")
+elseif filereadable("composer.json")
+    source ~/.vimrc.d/php.vimrc
+    autocmd VimEnter * echo expand("loaded language config: php")
 endif
 Plug 'Konfekt/FastFold'
 Plug 'ryanoasis/vim-devicons'
@@ -218,3 +228,13 @@ colorscheme vim-monokai-tasty
 hi Normal guibg=NONE ctermbg=NONE
 hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
 hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE
+
+" WSL yank support
+let s:clip = '/mnt/c/WINDOWS/system32/clip.exe'  " change this path according to your mount point
+if executable(s:clip)
+    augroup WSLYank
+        autocmd!
+        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+    augroup END
+endif
+nnoremap <leader>e :!notepad2 %<cr>

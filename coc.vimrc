@@ -1,7 +1,7 @@
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'neoclide/coc-json',  {'do': 'yarn install --frozen-lockfile'}
-Plug 'neoclide/coc-snippets',  {'do': 'yarn install --frozen-lockfile'}
-Plug 'iamcco/coc-vimlsp',  {'do': 'yarn install --frozen-lockfile'}
+Plug 'neoclide/coc-json',  {'do': 'yarn install --frozen-lockfile && yarn build'}
+Plug 'neoclide/coc-snippets',  {'do': 'yarn install --frozen-lockfile && yarn build'}
+Plug 'iamcco/coc-vimlsp',  {'do': 'yarn install --frozen-lockfile && yarn build'}
 " if hidden is not set, TextEdit might fail.
 set hidden
 
