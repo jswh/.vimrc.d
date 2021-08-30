@@ -59,15 +59,13 @@ Plug 'junegunn/vim-emoji'
 Plug 'sheerun/vim-polyglot'
     let g:polyglot_disabled = []
 
-"Plug 'dracula/vim'
-Plug 'patstockwell/vim-monokai-tasty'
+Plug 'dracula/vim'
+"Plug 'patstockwell/vim-monokai-tasty'
 Plug 'itchyny/lightline.vim'
-
-
     set laststatus=2
     set noshowmode
     let g:lightline = {
-        \ 'colorscheme': 'monokai_tasty',
+        \ 'colorscheme': 'dracula',
         \ 'active': {
         \   'left': [
         \       ['mode', 'paste'],
@@ -111,29 +109,25 @@ Plug 'itchyny/lightline.vim'
         return filename . modified
     endfunction
 "====================basic plugin=========================
-
 " git wraper plugin, user G*** command like Gstatus,Gcommit
 Plug 'tpope/vim-fugitive'
 
-" nerdtree: user `dir` to open file tree
-" nerdtree-git-plugin show git status of file in nerdtree
-" nerdtree-tabs keep nerdtree status as the same in all tabs
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'scrooloose/nerdtree'
-    let g:NERDTreeIgnore=['\.pyc$', '\.vim$', '\~$', '\.out']
-    autocmd BufWinEnter * silent NERDTreeMirror
-    nnoremap dir :NERDTreeToggle<CR>
-    nnoremap dif :NERDTreeFind<CR>
+Plug 'kyazdani42/nvim-web-devicons' | Plug 'kyazdani42/nvim-tree.lua'
+    let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache', 'vendor', '.pyc' ]
+    let g:nvim_tree_gitignore = 1
+    let g:nvim_tree_auto_open = 1
+    let g:nvim_tree_auto_close = 1
+    let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ]
+    let g:nvim_tree_follow = 1
+    let g:nvim_tree_indent_markers = 1
+    let g:nvim_tree_highlight_opened_files = 1
+    let g:nvim_tree_add_trailing = 1
 
-    let g:NERDTreeDirArrowExpandable = '▶'
-    let g:NERDTreeDirArrowCollapsible = '◿'
-    let g:NERDTreeMouseMode = 2
-    let g:NERDTreeAutoDeleteBuffer = 1
-    let NERDTreeShowBookmarks =1
-    let NERDTreeMinimalUI = 1
-    let NERDTreeDirArrows = 1
+    nnoremap dir :NvimTreeToggle<CR>
+    nnoremap dif :NvimTreeFindFile<CR>
 
 " Plug 'vim-vdebug/vdebug'
+
 " show git status of line in status column
 Plug 'airblade/vim-gitgutter'
 " autoclose of <> {} '' etc
@@ -146,7 +140,8 @@ Plug 'skywind3000/asyncrun.vim'
 Plug 'eshion/vim-sync'
     autocmd BufWritePost * :call SyncUploadFile()
 " a fuzzy finder, use ctrl-p.
-source ~/.vimrc.d/denite.vimrc
+"source ~/.vimrc.d/denite.vimrc
+source ~/.vimrc.d/telescope.vimrc
 " enable project .vimrc
 if getcwd() != expand('~') && filereadable(".vimrc")
     source .vimrc
@@ -162,48 +157,46 @@ elseif filereadable('package.json')
 elseif filereadable("composer.json")
     source ~/.vimrc.d/php.vimrc
     autocmd VimEnter * echo expand("loaded language config: php")
+elseif filereadable("requirements")
+    source ~/.vimrc.d/python.vimrc
+    autocmd VimEnter * echo expand("loaded language config: python")
 endif
 Plug 'Konfekt/FastFold'
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "===================plugin end=======================
-" denite buffer mapping not change for project
-autocmd FileType denite call s:denite_my_settings()
-function! s:denite_my_settings() abort
-  nnoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  inoremap <silent><buffer><expr> <CR>
-  \ denite#do_map('do_action')
-  nnoremap <silent><buffer><expr> d
-  \ denite#do_map('do_action', 'delete')
-  nnoremap <silent><buffer><expr> p
-  \ denite#do_map('do_action', 'preview')
-  nnoremap <silent><buffer><expr> <esc> denite#do_map('quit')
-  nnoremap <silent><buffer><expr> i
-  \ denite#do_map('open_filter_buffer')
-  nnoremap <silent><buffer><expr> <Space>
-  \ denite#do_map('toggle_select').'j'
-endfunction
-
-call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
-      \ [ '.git/', '.ropeproject/', '__pycache__/',
-      \   'venv/', 'images/', '*.min.*', 'img/', 'fonts/'])
-autocmd FileType denite-filter call s:denite_filter_my_settings()
-function! s:denite_filter_my_settings() abort
-  imap <silent><buffer> <esc> <Plug>(denite_filter_quit)
-endfunction
-" Ripgrep command on grep source
-call denite#custom#var('grep', 'command', ['rg'])
-call denite#custom#var('grep', 'default_opts',
-        \ ['-i', '--vimgrep', '--no-heading'])
-call denite#custom#var('grep', 'recursive_opts', [])
-call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-call denite#custom#var('grep', 'separator', ['--'])
-call denite#custom#var('grep', 'final_opts', [])
-let ignore=&wildignore . ',*.pyc,.git,.hg,.svn'
-call denite#custom#var('file/rec', 'command',
-\ ['scantree.py', '--path', ':directory',
-\  '--ignore', ignore])
+lua << EOF
+require("telescope").setup {
+  defaults = {
+    -- Your defaults config goes in here
+  },
+  pickers = {
+    -- Your special builtin config goes in here
+    buffers = {
+      sort_lastused = true,
+      theme = "dropdown",
+      previewer = false,
+      mappings = {
+        i = {
+          ["<c-d>"] = require("telescope.actions").delete_buffer,
+          -- Right hand side can also be the name of the action as a string
+          ["<c-d>"] = "delete_buffer",
+        },
+        n = {
+          ["<c-d>"] = require("telescope.actions").delete_buffer,
+        }
+      }
+    },
+    find_files = {
+      theme = "dropdown"
+    }
+  },
+  prompt_prefix = "🔍 ",
+  extensions = {
+    -- Your extension config goes in here
+  }
+}
+EOF
 "===================keybinding=======================
 "move window
 nnoremap wh <c-w>h
@@ -224,17 +217,8 @@ autocmd BufWritePre * :%s/\s\+$//e
 nnoremap <leader>q :bprevious<CR>:bdelete #<CR>
 
 "===================theme settings=======================
-colorscheme vim-monokai-tasty
+"colorscheme vim-monokai-tasty
+colorscheme dracula
 hi Normal guibg=NONE ctermbg=NONE
 hi Folded guibg=NONE ctermbg=NONE ctermfg=3 guifg=DarkCyan
 hi VertSplit cterm=NONE gui=NONE ctermfg=61 ctermbg=NONE guifg=#6272A4 guibg=NONE
-
-" WSL yank support
-let s:clip = '/mnt/c/WINDOWS/system32/clip.exe'  " change this path according to your mount point
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
-    augroup END
-endif
-nnoremap <leader>e :!notepad2 %<cr>
