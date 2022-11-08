@@ -33,6 +33,7 @@ return require('packer').startup(function(use)
   use 'kamykn/spelunker.vim'
   use 'rmagatti/goto-preview'
   use 'voldikss/vim-floaterm'
+  use 'gpanders/editorconfig.nvim'
 
 
 end)
