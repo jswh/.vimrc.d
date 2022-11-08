@@ -28,19 +28,19 @@ pluginKeys.maplsp = function(mapbuf)
   -- code action
   mapbuf('n', '<F3>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opt)
   -- go xx
-  mapbuf('n', 'gp', '<cmd>lua vim.lsp.buf.definition()<CR>', opt)
+  mapbuf('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opt)
   mapbuf('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', opt)
   mapbuf('n', 'gdd', '<cmd>lua vim.lsp.buf.declaration()<CR>', opt)
   mapbuf('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opt)
   mapbuf('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opt)
   -- diagnostic
   mapbuf('n', 'go', '<cmd>lua vim.diagnostic.open_float()<CR>', opt)
-  mapbuf('n', 'gd', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opt)
+  mapbuf('n', 'gp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opt)
   mapbuf('n', 'gn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opt)
 
   mapbuf('n', '==', '<cmd>lua vim.lsp.buf.formatting()<CR>', opt)
 
-  mapbuf('n', 'gp', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opt)
+  mapbuf('n', 'pp', "<cmd>lua require('goto-preview').goto_preview_definition()<CR>", opt)
   -- mapbuf('n','gpt', "<cmd>lua require('goto-preview').goto_preview_type_definition()<CR>", opt)
   -- mapbuf('n','gpi', "<cmd>lua require('goto-preview').goto_preview_implementation()<CR>", opt)
   -- mapbuf('n','<leader>P',  "<cmd>lua require('goto-preview').close_all_win()<CR>", opt)

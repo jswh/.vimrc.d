@@ -34,6 +34,7 @@ return require('packer').startup(function(use)
   use 'rmagatti/goto-preview'
   use 'voldikss/vim-floaterm'
   use 'gpanders/editorconfig.nvim'
+  use 'folke/trouble.nvim'
 
 
 end)

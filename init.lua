@@ -17,6 +17,7 @@ require('goto-preview').setup {}
 require("null-ls").setup({
     sources = { },
 })
+require("trouble").setup {}
 
 require("plugin_configs.treesitter")
 require("plugin_configs.bufferline")
